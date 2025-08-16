@@ -43,4 +43,9 @@ public class Boat {
 	public void setDescription(final String description) {
 		this.description = description;
 	}
+
+	@Override
+	public String toString() {
+		return "Boat{" + "id=" + id + ", name='" + name + '\'' + ", description='" + description + '\'' + '}';
+	}
 }

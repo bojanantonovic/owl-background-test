@@ -58,13 +58,14 @@ public class MainController {
 		LOGGER.info("Adding boat with name {} and description {}", boat.getName(), boat.getDescription());
 		boat.setId(index++);
 		boats.put(boat.getId(), boat);
+		LOGGER.info("Current boats: {}", boats);
 		return boat;
 	}
 
 	@DeleteMapping(path = "/boats/{id}")
 	public void deleteBoat(final @PathVariable  Long id) {
 		LOGGER.info("Deleting boat with id {}", id);
-		LOGGER.info("Current boats: {}", boats);
 		boats.remove(id);
+		LOGGER.info("Current boats: {}", boats);
 	}
 }
