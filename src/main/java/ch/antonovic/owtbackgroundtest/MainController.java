@@ -38,6 +38,8 @@ public class MainController {
 	@PostConstruct
 	public void init() {
 		LOGGER.info("MainController initialized!");
+		final Boat dummyBoat = new Boat(index++, "Dummy Boat", "This is a dummy boat for testing purposes.");
+		boats.put(dummyBoat.getId(), dummyBoat);
 	}
 
 	@GetMapping("/")
@@ -52,15 +54,17 @@ public class MainController {
 	}
 
 	@PostMapping(path = "/boats", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Boat addBoat(/*final String name, final String description*/ @RequestBody final Boat boat2) {
-		LOGGER.info("Adding boat with name {} and description {}", boat2.getName(), boat2.getDescription());
-		final var boat = new Boat(index++, boat2.getName(), boat2.getDescription());
+	public Boat addBoat(@RequestBody final Boat boat) {
+		LOGGER.info("Adding boat with name {} and description {}", boat.getName(), boat.getDescription());
+		boat.setId(index++);
 		boats.put(boat.getId(), boat);
 		return boat;
 	}
 
-	@DeleteMapping(path = "/boats")
-	public void deleteBoat(final Long id) {
+	@DeleteMapping(path = "/boats/{id}")
+	public void deleteBoat(final @PathVariable  Long id) {
+		LOGGER.info("Deleting boat with id {}", id);
+		LOGGER.info("Current boats: {}", boats);
 		boats.remove(id);
 	}
 }
