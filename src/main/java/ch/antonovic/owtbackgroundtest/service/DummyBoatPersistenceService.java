@@ -33,6 +33,15 @@ public class DummyBoatPersistenceService implements BoatPersistenceService {
 	}
 
 	@Override
+	public Boat updateBoat(final Long id, final String name, final String description) {
+		final Boat boat = new Boat(id, name, description);
+		boats.put(boat.getId(), boat);
+		LOGGER.info("Current boats: {}", boats);
+
+		return boat;
+	}
+
+	@Override
 	public void deleteBoat(final Long id) {
 		LOGGER.info("Deleting boat with id {}", id);
 		boats.remove(id);

@@ -10,5 +10,7 @@ public interface BoatPersistenceService {
 
 	Boat addBoat(String name, String description);
 
+	Boat updateBoat(Long id, String name, String description);
+
 	void deleteBoat(Long id);
 }

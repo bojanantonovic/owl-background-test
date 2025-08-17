@@ -5,7 +5,6 @@ import ch.antonovic.owtbackgroundtest.service.BoatPersistenceService;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +21,11 @@ import java.util.List;
 public class MainController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
 
-	@Autowired
-	private BoatPersistenceService boatPersistenceService;
+	private final BoatPersistenceService boatPersistenceService;
+
+	public MainController(final BoatPersistenceService boatPersistenceService) {
+		this.boatPersistenceService = boatPersistenceService;
+	}
 
 	@PostConstruct
 	public void postConstruct() {
@@ -45,7 +47,6 @@ public class MainController {
 	@PostConstruct
 	public void init() {
 		LOGGER.info("MainController initialized!");
-		boatPersistenceService.addBoat("Dummy Boat", "This is a dummy boat for testing purposes.");
 	}
 
 	@GetMapping("/")
@@ -64,6 +65,15 @@ public class MainController {
 	public ResponseEntity<Boat> addBoat(@RequestBody final JsonBoat jsonBoat) {
 		LOGGER.info("Adding boat with name {} and description {}", jsonBoat.name(), jsonBoat.description());
 		final var addedBoat = boatPersistenceService.addBoat(jsonBoat.name(), jsonBoat.description());
+		final URI location = URI.create("/boats/" + addedBoat.getId());
+		return ResponseEntity.created(location) // = Status 201
+				.body(addedBoat);
+	}
+
+	@PutMapping(path = "/boats", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Boat> updateBoat(@RequestBody final JsonBoatWithId jsonBoat) {
+		LOGGER.info("Updating boat with id {}, name {} and description {}", jsonBoat.id(), jsonBoat.name(), jsonBoat.description());
+		final var addedBoat = boatPersistenceService.updateBoat(jsonBoat.id(), jsonBoat.name(), jsonBoat.description());
 		final URI location = URI.create("/boats/" + addedBoat.getId());
 		return ResponseEntity.created(location) // = Status 201
 				.body(addedBoat);
