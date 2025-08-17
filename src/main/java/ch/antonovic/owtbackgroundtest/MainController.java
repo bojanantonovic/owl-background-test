@@ -21,6 +21,11 @@ public class MainController {
 	@Autowired
 	private BoatPersistenceService boatPersistenceService;
 
+	@PostConstruct
+	public void postConstruct() {
+		LOGGER.info("BoatPersistenceService: {}", boatPersistenceService.getClass().getName());
+	}
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll()) // alle Requests erlauben
