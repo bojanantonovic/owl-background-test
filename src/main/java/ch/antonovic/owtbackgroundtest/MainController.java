@@ -3,6 +3,7 @@ package ch.antonovic.owtbackgroundtest;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,18 +11,15 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "*")
 public class MainController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
 
-	long index = 0;
-	final Map<Long, Boat> boats = new HashMap<>();
+	@Autowired
+	private BoatPersistenceService boatPersistenceService;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
@@ -38,8 +36,7 @@ public class MainController {
 	@PostConstruct
 	public void init() {
 		LOGGER.info("MainController initialized!");
-		final Boat dummyBoat = new Boat(index++, "Dummy Boat", "This is a dummy boat for testing purposes.");
-		boats.put(dummyBoat.getId(), dummyBoat);
+		boatPersistenceService.addBoat("Dummy Boat", "This is a dummy boat for testing purposes.");
 	}
 
 	@GetMapping("/")
@@ -49,23 +46,19 @@ public class MainController {
 
 	@GetMapping(path = "/boats", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Boat> getAllBoats() {
-		LOGGER.info("Getting all boats: {}", boats.values());
-		return new ArrayList<>(boats.values());
+		final List<Boat> boats = boatPersistenceService.getAllBoats();
+		LOGGER.info("Getting all boats: {}", boats);
+		return boats;
 	}
 
 	@PostMapping(path = "/boats", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Boat addBoat(@RequestBody final Boat boat) {
-		LOGGER.info("Adding boat with name {} and description {}", boat.getName(), boat.getDescription());
-		boat.setId(index++);
-		boats.put(boat.getId(), boat);
-		LOGGER.info("Current boats: {}", boats);
-		return boat;
+	public Boat addBoat(@RequestBody final JsonBoat jsonBoat) {
+		LOGGER.info("Adding boat with name {} and description {}", jsonBoat.name(), jsonBoat.description());
+		return boatPersistenceService.addBoat(jsonBoat.name(), jsonBoat.description());
 	}
 
 	@DeleteMapping(path = "/boats/{id}")
-	public void deleteBoat(final @PathVariable  Long id) {
-		LOGGER.info("Deleting boat with id {}", id);
-		boats.remove(id);
-		LOGGER.info("Current boats: {}", boats);
+	public void deleteBoat(final @PathVariable Long id) {
+		boatPersistenceService.deleteBoat(id);
 	}
 }
