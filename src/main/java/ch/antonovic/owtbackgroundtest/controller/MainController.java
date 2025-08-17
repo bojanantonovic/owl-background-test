@@ -8,11 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -59,9 +61,12 @@ public class MainController {
 	}
 
 	@PostMapping(path = "/boats", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Boat addBoat(@RequestBody final JsonBoat jsonBoat) {
+	public ResponseEntity<Boat> addBoat(@RequestBody final JsonBoat jsonBoat) {
 		LOGGER.info("Adding boat with name {} and description {}", jsonBoat.name(), jsonBoat.description());
-		return boatPersistenceService.addBoat(jsonBoat.name(), jsonBoat.description());
+		final var addedBoat = boatPersistenceService.addBoat(jsonBoat.name(), jsonBoat.description());
+		final URI location = URI.create("/boats/" + addedBoat.getId());
+		return ResponseEntity.created(location) // = Status 201
+				.body(addedBoat);
 	}
 
 	@DeleteMapping(path = "/boats/{id}")
