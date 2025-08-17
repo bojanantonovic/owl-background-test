@@ -1,4 +1,4 @@
-package ch.antonovic.owtbackgroundtest;
+package ch.antonovic.owtbackgroundtest.persistance;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
