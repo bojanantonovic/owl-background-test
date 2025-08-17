@@ -1,6 +1,6 @@
-package ch.antonovic.owtbackgroundtest.service;
+package ch.antonovic.owlbackgroundtest.service;
 
-import ch.antonovic.owtbackgroundtest.persistance.Boat;
+import ch.antonovic.owlbackgroundtest.persistance.Boat;
 
 import java.util.List;
 

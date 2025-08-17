@@ -1,4 +1,4 @@
-package ch.antonovic.owtbackgroundtest;
+package ch.antonovic.owlbackgroundtest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

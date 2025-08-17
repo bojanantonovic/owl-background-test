@@ -1,4 +1,4 @@
-package ch.antonovic.owtbackgroundtest.controller;
+package ch.antonovic.owlbackgroundtest.controller;
 
 public record JsonBoat(String name, String description) {
 

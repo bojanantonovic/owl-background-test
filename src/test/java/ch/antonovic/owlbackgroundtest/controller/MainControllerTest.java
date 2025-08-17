@@ -1,6 +1,6 @@
-package ch.antonovic.owtbackgroundtest.controller;
+package ch.antonovic.owlbackgroundtest.controller;
 
-import ch.antonovic.owtbackgroundtest.persistance.Boat;
+import ch.antonovic.owlbackgroundtest.persistance.Boat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

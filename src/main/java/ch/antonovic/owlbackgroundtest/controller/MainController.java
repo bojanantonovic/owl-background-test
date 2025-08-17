@@ -1,7 +1,7 @@
-package ch.antonovic.owtbackgroundtest.controller;
+package ch.antonovic.owlbackgroundtest.controller;
 
-import ch.antonovic.owtbackgroundtest.persistance.Boat;
-import ch.antonovic.owtbackgroundtest.service.BoatPersistenceService;
+import ch.antonovic.owlbackgroundtest.persistance.Boat;
+import ch.antonovic.owlbackgroundtest.service.BoatPersistenceService;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

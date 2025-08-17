@@ -1,6 +1,6 @@
-package ch.antonovic.owtbackgroundtest.service;
+package ch.antonovic.owlbackgroundtest.service;
 
-import ch.antonovic.owtbackgroundtest.persistance.Boat;
+import ch.antonovic.owlbackgroundtest.persistance.Boat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

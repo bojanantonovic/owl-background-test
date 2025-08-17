@@ -1,4 +1,4 @@
-package ch.antonovic.owtbackgroundtest.persistance;
+package ch.antonovic.owlbackgroundtest.persistance;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

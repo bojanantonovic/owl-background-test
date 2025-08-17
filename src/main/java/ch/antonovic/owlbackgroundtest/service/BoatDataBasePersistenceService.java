@@ -1,7 +1,7 @@
-package ch.antonovic.owtbackgroundtest.service;
+package ch.antonovic.owlbackgroundtest.service;
 
-import ch.antonovic.owtbackgroundtest.persistance.Boat;
-import ch.antonovic.owtbackgroundtest.persistance.BoatJpaRepository;
+import ch.antonovic.owlbackgroundtest.persistance.Boat;
+import ch.antonovic.owlbackgroundtest.persistance.BoatJpaRepository;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
