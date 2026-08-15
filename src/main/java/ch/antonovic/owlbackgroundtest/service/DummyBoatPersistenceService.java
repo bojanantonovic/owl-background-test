@@ -25,7 +25,6 @@ public class DummyBoatPersistenceService implements BoatPersistenceService {
 	@Override
 	public Boat addBoat(final String name, final String description) {
 		final Boat boat = new Boat(index++, name, description);
-		boat.setId(index++);
 		boats.put(boat.getId(), boat);
 		LOGGER.info("Current boats: {}", boats);
 

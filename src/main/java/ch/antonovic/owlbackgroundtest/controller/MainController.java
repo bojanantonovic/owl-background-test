@@ -3,6 +3,7 @@ package ch.antonovic.owlbackgroundtest.controller;
 import ch.antonovic.owlbackgroundtest.persistance.Boat;
 import ch.antonovic.owlbackgroundtest.service.BoatPersistenceService;
 import jakarta.annotation.PostConstruct;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -28,10 +29,12 @@ public class MainController {
 	}
 
 	@PostConstruct
-	public void postConstruct() {
-		LOGGER.info("BoatPersistenceService: {}", boatPersistenceService.getClass().getName());
+	public void init() {
+		LOGGER.info("MainController initialized with BoatPersistenceService: {}", boatPersistenceService.getClass().getName());
 	}
 
+	// TODO: Diese Konfiguration (permitAll, CSRF/CORS offen) ist nur für lokale Demo-/Testzwecke geeignet
+	// und muss vor einem Produktiveinsatz durch echte Authentifizierung/Autorisierung ersetzt werden.
 	@Bean
 	public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll()) // alle Requests erlauben
@@ -42,11 +45,6 @@ public class MainController {
 				.httpBasic(AbstractHttpConfigurer::disable); // Basic-Auth abschalten
 
 		return http.build();
-	}
-
-	@PostConstruct
-	public void init() {
-		LOGGER.info("MainController initialized!");
 	}
 
 	@GetMapping("/")
@@ -62,7 +60,7 @@ public class MainController {
 	}
 
 	@PostMapping(path = "/boats", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Boat> addBoat(@RequestBody final JsonBoat jsonBoat) {
+	public ResponseEntity<Boat> addBoat(@Valid @RequestBody final JsonBoat jsonBoat) {
 		LOGGER.info("Adding boat with name {} and description {}", jsonBoat.name(), jsonBoat.description());
 		final var addedBoat = boatPersistenceService.addBoat(jsonBoat.name(), jsonBoat.description());
 		final URI location = URI.create("/boats/" + addedBoat.getId());
@@ -71,7 +69,7 @@ public class MainController {
 	}
 
 	@PutMapping(path = "/boats", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Boat> updateBoat(@RequestBody final JsonBoatWithId jsonBoat) {
+	public ResponseEntity<Boat> updateBoat(@Valid @RequestBody final JsonBoatWithId jsonBoat) {
 		LOGGER.info("Updating boat with id {}, name {} and description {}", jsonBoat.id(), jsonBoat.name(), jsonBoat.description());
 		final var addedBoat = boatPersistenceService.updateBoat(jsonBoat.id(), jsonBoat.name(), jsonBoat.description());
 		final URI location = URI.create("/boats/" + addedBoat.getId());
@@ -80,7 +78,8 @@ public class MainController {
 	}
 
 	@DeleteMapping(path = "/boats/{id}")
-	public void deleteBoat(final @PathVariable Long id) {
+	public ResponseEntity<Void> deleteBoat(final @PathVariable Long id) {
 		boatPersistenceService.deleteBoat(id);
+		return ResponseEntity.noContent().build(); // = Status 204
 	}
 }

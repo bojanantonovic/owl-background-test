@@ -1,5 +1,7 @@
 package ch.antonovic.owlbackgroundtest.controller;
 
-public record JsonBoat(String name, String description) {
+import jakarta.validation.constraints.NotBlank;
+
+public record JsonBoat(@NotBlank String name, @NotBlank String description) {
 
 }
