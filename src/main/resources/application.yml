@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: owt-background-test
+  # H2 In-Memory
+  datasource:
+    url: jdbc:h2:mem:demo;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      # ddl-auto:
+      #   create-drop: bei Start erstellen, bei Shutdown löschen
+      #   create:      bei Start neu erstellen
+      #   update:      Schema anpassen (dev-freundlich)
+      ddl-auto: update
+    # OSIV deaktivieren (Best Practice): kein Lazy-Loading ausserhalb der Transaktion
+    open-in-view: false
+    # Optional, meist auto-erkannt:
+    # database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: false
+  # H2-Konsole
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+logging:
+  level:
+    root: INFO
+    ch.antonovic.owlbackgroundtest: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss} %-5level %logger{36} - %msg%n"
